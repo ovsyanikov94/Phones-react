@@ -7,38 +7,19 @@ class PhoneListComponent extends Component {
 
   constructor(props){
 
-    super(props);
+      super(props);
 
-      this.phoneService = new PhoneService();
-
-      console.log(props);
-
-      this.state = {
-          phones: []
-      };
-
-
-      this.phoneService
-          .GetPhones('phones/phones.json')
-          .then( this.loadPhones.bind(this) );
-      ;
 
   }//constructor
 
-  loadPhones( response ){
-
-        console.log(response);
-
-        this.setState({
-            phones: response
-        });
-
-    }//loadPhones
-
   render(){
 
-    const PhonesArray = this.state.phones.map(
-        p => <PhoneComponent key={p.id} phone={ p } />
+    const PhonesArray = this.props.phones.map(
+        p => <PhoneComponent
+            onAddPhone={this.props.onAddPhone}
+            key={p.id}
+            phone={ p }
+        />
     );
 
     return (

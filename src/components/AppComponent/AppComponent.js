@@ -13,23 +13,96 @@ import {
 } from "react-router-dom";
 
 import SinglePhoneComponent from "../SinglePhoneComponent/SinglePhoneComponent";
+import PhoneService from "../../services/PhoneService";
+import CartService from "../../services/CartService";
 
 class AppComponent extends React.Component{
 
     constructor( props ){
+
         super(props);
 
+        this.phoneService = new PhoneService();
+        this.cartService = new CartService();
+
+        this.phoneService
+            .GetPhones('phones/phones.json')
+            .then( this.loadPhones.bind(this) );
+        ;
+
         this.state = {
-            'searchString': ''
+            'searchString': '',
+            phones: [],
+            cart: this.cartService.getCart()
         };
 
     }//constructor
 
-    onSearchStringChanged( str ){
+    loadPhones( response ){
+
+        console.log('RESPONSE: ' , response );
+
+        this.setState({
+            phones: response
+        });
+
+    }//loadPhones
+
+    async onSearchStringChanged( str ){
 
         console.log( str );
 
+        try{
+
+
+            let phones = await this.phoneService.GetPhones('phones/phones.json');
+
+            phones = phones.filter( p => p.name.toLowerCase().indexOf( str.toLowerCase() ) !== -1 );
+
+            this.setState({
+                phones: phones
+            });
+
+        }//try
+        catch(ex){
+
+            console.log('EXCEPTION!' , ex);
+
+        }//catch
+
     }
+
+    onSortTypeChanged( value ){
+
+        let phones = [];
+
+        if( value === 'Alphabetical' ){
+
+            phones = this.state.phones.sort( ( left , right )=>{
+
+                return left.name > right.name ? 1 : -1;
+
+            } );
+
+        }//if
+        else{
+
+            phones = this.state.phones.sort( ( left , right )=>{
+
+                return +left.age > +right.age ? 1 : -1;
+
+            } );
+
+        }//else
+
+        this.setState({
+            phones: phones
+        });
+
+        console.log('PHONES:' , phones );
+
+
+    }//onSortTypeChanged
 
     render(){
 
@@ -42,10 +115,18 @@ class AppComponent extends React.Component{
 
                             <SearchComponent
                                 onSearchStringChanged={
-                                    this.onSearchStringChanged
+                                    this.onSearchStringChanged.bind( this )
                                 } />
-                            <SortComponent />
-                            <CartComponent />
+
+                            <SortComponent
+                                onSortTypeChanged={
+                                    this.onSortTypeChanged.bind( this )
+                                } />
+
+                            <CartComponent
+                                cart={this.state.cart}
+                                onRemovePhone={ this.onRemovePhone.bind( this ) }
+                            />
 
                         </section>
 
@@ -57,10 +138,12 @@ class AppComponent extends React.Component{
                             <Route
                                 path="/"
                                 exact
-                                component={PhoneListComponent}
-                                history={{
-                                    'string': this.state.searchString
-                                }}
+                                render={ ()=>
+                                    <PhoneListComponent
+                                        phones={this.state.phones}
+                                        onAddPhone={ this.addPhone.bind(this) }
+                                    />
+                                }
                             />
                             <Route path="/phone/:id" component={SinglePhoneComponent} />
 
@@ -72,6 +155,24 @@ class AppComponent extends React.Component{
         );
 
     }//render
+
+    addPhone( phone ){
+
+        this.cartService.addPhone( phone );
+        this.setState({
+            cart: this.cartService.getCart()
+        });
+
+    }//addPhone
+
+    onRemovePhone( id ){
+
+        this.cartService.removePhone( id );
+        this.setState({
+            cart: this.cartService.getCart()
+        });
+
+    }//onRemovePhone
 
 }//AppComponent
 

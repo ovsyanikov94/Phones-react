@@ -1,23 +1,45 @@
 import React, {Component} from 'react';
-import PropTypes from 'prop-types';
 
 class SortComponent extends Component {
+
   constructor(props){
+
     super(props);
-  }
+
+    this.state = {
+        value: 'Newest'
+    };
+
+    this.onSortTypeChanged = this.onSortTypeChanged.bind(this);
+
+  }//constructor
+
   render(){
     return (
         <p>
             Sort by:
-            <select>
-                <option value="name">Alphabetical</option>
-                <option value="age">Newest</option>
+            <select
+                value={this.state.value}
+                onChange={this.onSortTypeChanged}
+            >
+                <option value="Alphabetical">Alphabetical</option>
+                <option value="Newest">Newest</option>
+
             </select>
         </p>
     )
-  }
-}
-SortComponent.propTypes = {
+  }//render
+
+  onSortTypeChanged( event ){
+
+      this.setState({
+          value: event.target.value
+      });
+
+      this.props.onSortTypeChanged( event.target.value );
+
+  }//onSortTypeChanged
+
 }
 
 export default SortComponent;

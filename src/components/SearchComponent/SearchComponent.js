@@ -2,10 +2,13 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 class SearchComponent extends React.Component {
+
   constructor(props){
-    super(props);
+
+      super(props);
 
     console.log(props);
+
     this.state = {
         onSearchStringChanged : props.onSearchStringChanged
     };
