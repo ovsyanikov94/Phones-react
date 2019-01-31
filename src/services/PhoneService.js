@@ -1,6 +1,12 @@
+import CartService from './CartService';
+
 
 class PhoneService{
 
+
+    constructor() {
+        this.cartService = CartService;
+    }
 
     async GetPhones( path ){
 
@@ -10,6 +16,10 @@ class PhoneService{
 
             response = await response.json();
             console.log(response);
+
+            response.forEach( p => {
+                p.isInCart = this.cartService.iInCart( p.age );
+            } );
 
             return response;
 

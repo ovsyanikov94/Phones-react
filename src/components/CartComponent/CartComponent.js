@@ -1,15 +1,20 @@
 import React, {Component} from 'react';
+import CartService from "../../services/CartService";
 
 class CartComponent extends Component {
 
    constructor(props){
     super(props);
 
+    this.cartService = CartService;
+
   }//constructor
 
   render(){
 
-    let items = this.props.cart.map( p =>
+    let cart = this.cartService.getCart();
+
+    let items = cart.map( p =>
         <li key={p.id}>{p.name} ({p.amount}) <span style={
             {
                 color: 'red',

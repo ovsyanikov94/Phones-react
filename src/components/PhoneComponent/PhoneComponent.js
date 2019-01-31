@@ -1,12 +1,14 @@
 import React, {Component} from 'react';
 
 import {Link} from "react-router-dom";
+import CartService from "../../services/CartService";
 
 class PhoneComponent extends Component {
 
   constructor(props){
 
     super(props);
+    this.cartService = CartService;
 
   }
 
@@ -29,8 +31,10 @@ class PhoneComponent extends Component {
             </Link>
             {(
 
-                !this.props.isInCart && <div className="phones__btn-buy-wrapper">
-                    <span className="btn btn-success" onClick={this.addPhone.bind(this)}>
+                !this.props.phone.isInCart && <div className="phones__btn-buy-wrapper">
+                    <span className="btn btn-success" onClick={
+                        this.cartService.addPhone.bind(this.cartService , this.props.phone)
+                    }>
                         Add
                     </span>
                 </div>

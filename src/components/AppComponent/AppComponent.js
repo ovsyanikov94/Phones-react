@@ -23,7 +23,7 @@ class AppComponent extends React.Component{
         super(props);
 
         this.phoneService = new PhoneService();
-        this.cartService = new CartService();
+        this.cartService = CartService;
 
         this.phoneService
             .GetPhones('phones/phones.json')

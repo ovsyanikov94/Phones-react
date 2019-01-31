@@ -10,7 +10,7 @@ class PhoneListComponent extends Component {
 
       super(props);
 
-      this.cartService = new CartService();
+      this.cartService = CartService;
 
   }//constructor
 
