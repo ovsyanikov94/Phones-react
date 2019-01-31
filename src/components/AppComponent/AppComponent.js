@@ -172,6 +172,18 @@ class AppComponent extends React.Component{
             cart: this.cartService.getCart()
         });
 
+        let phone = this.state.phones.find( p => +p.age === +id );
+
+        if( phone ){
+
+            phone.isInCart = false;
+            //
+            // this.setState({
+            //     phones: this.state.phones
+            // });
+
+        }//if
+
     }//onRemovePhone
 
 }//AppComponent

@@ -1,7 +1,8 @@
 import React, {Component} from 'react';
 
 import PhoneComponent from '../PhoneComponent/PhoneComponent';
-import PhoneService from "../../services/PhoneService";
+
+import CartService from '../../services/CartService';
 
 class PhoneListComponent extends Component {
 
@@ -9,6 +10,7 @@ class PhoneListComponent extends Component {
 
       super(props);
 
+      this.cartService = new CartService();
 
   }//constructor
 
@@ -17,6 +19,7 @@ class PhoneListComponent extends Component {
     const PhonesArray = this.props.phones.map(
         p => <PhoneComponent
             onAddPhone={this.props.onAddPhone}
+            isInCart={ this.cartService.isInCart(p.age) }
             key={p.id}
             phone={ p }
         />

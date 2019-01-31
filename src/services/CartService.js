@@ -2,7 +2,9 @@ class CartService{
 
     constructor(){
 
-    }
+        //this.cart = this.getCart();
+
+    }//constructor
 
     addPhone( phone ) {
 
@@ -47,7 +49,9 @@ class CartService{
 
         try{
 
-            let cart = JSON.parse(localStorage.getItem('cart'));
+            let cart = JSON.parse(
+                localStorage.getItem('cart')
+            );
 
             return cart || [];
 
@@ -79,6 +83,6 @@ class CartService{
 
     }//removePhone
 
-}
+}//CartService
 
 export default CartService;

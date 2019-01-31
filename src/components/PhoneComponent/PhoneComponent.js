@@ -1,17 +1,12 @@
 import React, {Component} from 'react';
 
 import {Link} from "react-router-dom";
-import CartService from "../../services/CartService";
 
 class PhoneComponent extends Component {
 
   constructor(props){
 
     super(props);
-
-    this.state = {
-        isInCart: new CartService().isInCart( this.props.phone.age ) || false
-    };
 
   }
 
@@ -34,7 +29,7 @@ class PhoneComponent extends Component {
             </Link>
             {(
 
-                !this.state.isInCart && <div className="phones__btn-buy-wrapper">
+                !this.props.isInCart && <div className="phones__btn-buy-wrapper">
                     <span className="btn btn-success" onClick={this.addPhone.bind(this)}>
                         Add
                     </span>
